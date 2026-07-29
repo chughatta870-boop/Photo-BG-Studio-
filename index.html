@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Photo BG Studio - M Ijaz</title>
+<meta name="description" content="Professional photo background remover, editor aur grid gallery app - M Ijaz GHS 124/NB">
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BG Studio">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">🖼️</span>
+      <div class="brand-text">
+        <strong>Photo BG Studio</strong>
+        <small>M Ijaz • GHS 124/NB</small>
+      </div>
+    </div>
+    <button id="galleryBtn" class="icon-btn" title="Gallery">🗂️</button>
+  </header>
+
+  <main id="homeScreen" class="screen active">
+    <div class="upload-card">
+      <div class="upload-icon">📸</div>
+      <h2>Naye Photo Se Shuru Karein</h2>
+      <p>Background remove karein, naya background lagayein, watermark add karein — sab kuch is app mein.</p>
+      <div class="upload-actions">
+        <label class="btn btn-primary">
+          📁 Gallery Se Photo
+          <input type="file" id="fileInput" accept="image/*" hidden>
+        </label>
+        <label class="btn btn-secondary">
+          📷 Camera Se Khinchen
+          <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+        </label>
+      </div>
+    </div>
+
+    <section class="grid-section">
+      <div class="grid-section-head">
+        <h3>Aap Ki Photo Grid</h3>
+        <span id="photoCount" class="count-badge">0</span>
+      </div>
+      <div id="photoGrid" class="photo-grid"></div>
+      <div id="emptyState" class="empty-state">
+        <p>Abhi koi photo save nahi hui. Upar se photo upload karein.</p>
+      </div>
+    </section>
+  </main>
+
+  <section id="editorScreen" class="screen">
+    <header class="editor-topbar">
+      <button id="backFromEditor" class="icon-btn">←</button>
+      <strong>Photo Edit Karein</strong>
+      <button id="resetEditor" class="icon-btn" title="Reset">↺</button>
+    </header>
+
+    <div class="canvas-wrap">
+      <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p id="loadingText">Background hata rahe hain...</p>
+      </div>
+      <canvas id="mainCanvas"></canvas>
+      <div id="cropBox" class="crop-box hidden">
+        <div class="crop-handle tl"></div>
+        <div class="crop-handle tr"></div>
+        <div class="crop-handle bl"></div>
+        <div class="crop-handle br"></div>
+      </div>
+    </div>
+
+    <div class="tool-tabs">
+      <button class="tab-btn active" data-tool="background">🎨 Background</button>
+      <button class="tab-btn" data-tool="adjust">🎚️ Adjust</button>
+      <button class="tab-btn" data-tool="crop">✂️ Crop/Rotate</button>
+      <button class="tab-btn" data-tool="watermark">💧 Watermark</button>
+    </div>
+
+    <div class="tool-panel active" id="panel-background">
+      <button id="removeBgBtn" class="btn btn-primary full">🪄 Background Remove Karein (AI)</button>
+      <div class="bg-options">
+        <p class="panel-label">Naya Background Chunein:</p>
+        <div class="swatch-row" id="colorSwatches">
+          <button class="swatch transparent-swatch" data-bg="transparent" title="Transparent"></button>
+          <button class="swatch" data-bg="#ffffff" style="background:#ffffff" title="White"></button>
+          <button class="swatch" data-bg="#000000" style="background:#000000" title="Black"></button>
+          <button class="swatch" data-bg="#e11d48" style="background:#e11d48" title="Red"></button>
+          <button class="swatch" data-bg="#2563eb" style="background:#2563eb" title="Blue"></button>
+          <button class="swatch" data-bg="#16a34a" style="background:#16a34a" title="Green"></button>
+          <button class="swatch" data-bg="gradient1" style="background:linear-gradient(135deg,#f093fb,#f5576c)" title="Gradient 1"></button>
+          <button class="swatch" data-bg="gradient2" style="background:linear-gradient(135deg,#4facfe,#00f2fe)" title="Gradient 2"></button>
+          <button class="swatch" data-bg="gradient3" style="background:linear-gradient(135deg,#43e97b,#38f9d7)" title="Gradient 3"></button>
+          <label class="swatch custom-bg-swatch" title="Custom Image">
+            🖼️
+            <input type="file" id="customBgInput" accept="image/*" hidden>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-panel" id="panel-adjust">
+      <div class="slider-row">
+        <label>Brightness</label>
+        <input type="range" id="brightness" min="50" max="150" value="100">
+      </div>
+      <div class="slider-row">
+        <label>Contrast</label>
+        <input type="range" id="contrast" min="50" max="150" value="100">
+      </div>
+      <div class="slider-row">
+        <label>Saturation</label>
+        <input type="range" id="saturation" min="0" max="200" value="100">
+      </div>
+      <div class="filter-row">
+        <button class="filter-chip active" data-filter="none">Original</button>
+        <button class="filter-chip" data-filter="grayscale">B/W</button>
+        <button class="filter-chip" data-filter="sepia">Sepia</button>
+        <button class="filter-chip" data-filter="vivid">Vivid</button>
+      </div>
+    </div>
+
+    <div class="tool-panel" id="panel-crop">
+      <div class="btn-row">
+        <button id="rotateLeftBtn" class="btn btn-secondary">↺ Rotate Left</button>
+        <button id="rotateRightBtn" class="btn btn-secondary">↻ Rotate Right</button>
+      </div>
+      <div class="btn-row">
+        <button id="flipBtn" class="btn btn-secondary">⇋ Flip</button>
+        <button id="cropToggleBtn" class="btn btn-secondary">✂️ Crop Mode</button>
+      </div>
+      <div class="btn-row hidden" id="cropApplyRow">
+        <button id="cropApplyBtn" class="btn btn-primary">✓ Crop Apply Karein</button>
+        <button id="cropCancelBtn" class="btn btn-secondary">✕ Cancel</button>
+      </div>
+    </div>
+
+    <div class="tool-panel" id="panel-watermark">
+      <div class="toggle-row">
+        <label for="watermarkToggle">Watermark Dikhayein</label>
+        <input type="checkbox" id="watermarkToggle" checked>
+      </div>
+      <div class="slider-row">
+        <label>Text</label>
+        <input type="text" id="watermarkText" value="M Ijaz" maxlength="30">
+      </div>
+      <div class="panel-label">Position:</div>
+      <div class="pos-grid" id="posGrid">
+        <button class="pos-btn" data-pos="tl">↖</button>
+        <button class="pos-btn" data-pos="tr">↗</button>
+        <button class="pos-btn" data-pos="center">●</button>
+        <button class="pos-btn" data-pos="bl">↙</button>
+        <button class="pos-btn active" data-pos="br">↘</button>
+      </div>
+      <div class="slider-row">
+        <label>Opacity</label>
+        <input type="range" id="watermarkOpacity" min="20" max="100" value="70">
+      </div>
+    </div>
+
+    <div class="editor-actions">
+      <button id="saveBtn" class="action-btn primary">💾 Save</button>
+      <button id="downloadBtn" class="action-btn">⬇️ Download</button>
+      <button id="shareBtn" class="action-btn">📤 Share</button>
+    </div>
+  </section>
+
+  <section id="viewScreen" class="screen">
+    <header class="editor-topbar">
+      <button id="backFromView" class="icon-btn">←</button>
+      <strong>Photo</strong>
+      <button id="deleteFromView" class="icon-btn" title="Delete">🗑️</button>
+    </header>
+    <div class="view-wrap">
+      <img id="viewImage" alt="Saved Photo">
+    </div>
+    <div class="editor-actions">
+      <button id="editFromView" class="action-btn primary">✏️ Edit</button>
+      <button id="downloadFromView" class="action-btn">⬇️ Download</button>
+      <button id="shareFromView" class="action-btn">📤 Share</button>
+    </div>
+  </section>
+
+  <div id="toast" class="toast"></div>
+  <div id="confirmDialog" class="confirm-overlay hidden">
+    <div class="confirm-box">
+      <p id="confirmText">Kya aap wakai delete karna chahte hain?</p>
+      <div class="confirm-actions">
+        <button id="confirmYes" class="btn btn-danger">Delete</button>
+        <button id="confirmNo" class="btn btn-secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+</body>
+</html>

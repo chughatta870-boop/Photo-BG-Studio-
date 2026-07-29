@@ -1,0 +1,54 @@
+{
+  "id": "/photo-bg-studio/",
+  "name": "Photo BG Studio - M Ijaz",
+  "short_name": "BG Studio",
+  "description": "Professional photo background remover, editor aur grid gallery app by M Ijaz, GHS 124/NB. Background remove/change karein, watermark lagayein, edit/save/download/share/delete karein.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "ur",
+  "dir": "rtl",
+  "categories": ["photo", "graphics", "productivity", "utilities"],
+  "icons": [
+    { "src": "icon-72.png", "sizes": "72x72", "type": "image/png", "purpose": "any" },
+    { "src": "icon-96.png", "sizes": "96x96", "type": "image/png", "purpose": "any" },
+    { "src": "icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Nayi Photo Upload Karein",
+      "short_name": "New Photo",
+      "description": "Foran nayi photo upload aur edit karein",
+      "url": "./index.html?action=new",
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96", "type": "image/png" }]
+    },
+    {
+      "name": "Gallery Dekhein",
+      "short_name": "Gallery",
+      "description": "Save ki hui photos ki grid dekhein",
+      "url": "./index.html?action=gallery",
+      "icons": [{ "src": "icon-96.png", "sizes": "96x96", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Photo BG Studio home screen"
+    }
+  ],
+  "prefer_related_applications": false
+}
